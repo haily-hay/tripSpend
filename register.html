@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register – TripSpend</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="auth-page">
+
+  <!-- ===== AUTH WRAPPER ===== -->
+  <div class="auth-wrapper">
+
+    <!-- LEFT PANEL – Hero Image -->
+    <div class="auth-panel-left">
+      <div class="auth-panel-overlay"></div>
+      <img src="assets/images/hero-bg.png" alt="Travel" class="auth-panel-img" />
+      <div class="auth-panel-content">
+        <a href="index.html" class="auth-brand">
+          <img src="assets/images/logo.png" alt="TripSpend Logo" class="auth-brand-logo" />
+          <span>TripSpend</span>
+        </a>
+        <h2 class="auth-panel-title">Join Thousands of Smart Travellers.</h2>
+        <p class="auth-panel-desc">
+          Create your free account and start managing your travel expenses instantly. All your data stays private on your device.
+        </p>
+        <ul class="auth-feature-list">
+          <li><i class="fas fa-check-circle"></i> 100% free, no subscription</li>
+          <li><i class="fas fa-check-circle"></i> Data stored locally on your device</li>
+          <li><i class="fas fa-check-circle"></i> No email verification required</li>
+          <li><i class="fas fa-check-circle"></i> Works offline</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL – Register Form -->
+    <div class="auth-panel-right">
+      <div class="auth-form-wrap">
+
+        <!-- Mobile brand -->
+        <a href="index.html" class="auth-mobile-brand">
+          <i class="fas fa-plane-departure"></i> TripSpend
+        </a>
+
+        <div class="auth-form-header">
+          <div class="auth-form-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <h1>Create Account</h1>
+          <p>Sign up and start tracking in seconds</p>
+        </div>
+
+        <!-- Alert boxes -->
+        <div class="auth-alert auth-alert-error" id="regAlert" style="display:none">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="regAlertMsg"></span>
+        </div>
+        <div class="auth-alert auth-alert-success" id="regSuccess" style="display:none">
+          <i class="fas fa-check-circle"></i>
+          <span>Account created! Redirecting to login…</span>
+        </div>
+
+        <form id="registerForm" class="auth-form" novalidate>
+
+          <!-- Full Name -->
+          <div class="auth-field">
+            <label for="regName">
+              <i class="fas fa-user"></i> Full Name
+            </label>
+            <input
+              type="text"
+              id="regName"
+              placeholder="Your full name"
+              autocomplete="name"
+              required
+            />
+            <span class="auth-field-error" id="regNameErr"></span>
+          </div>
+
+          <!-- Email -->
+          <div class="auth-field">
+            <label for="regEmail">
+              <i class="fas fa-envelope"></i> Email Address
+            </label>
+            <input
+              type="email"
+              id="regEmail"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <span class="auth-field-error" id="regEmailErr"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-field">
+            <label for="regPassword">
+              <i class="fas fa-lock"></i> Password
+            </label>
+            <div class="auth-input-group">
+              <input
+                type="password"
+                id="regPassword"
+                placeholder="Create a password (min. 6 chars)"
+                autocomplete="new-password"
+                required
+              />
+              <button type="button" class="auth-eye-btn" id="toggleRegPw" aria-label="Toggle password">
+                <i class="fas fa-eye" id="regEyeIcon"></i>
+              </button>
+            </div>
+            <!-- Password strength bar -->
+            <div class="pw-strength-bar" id="pwStrengthBar">
+              <div class="pw-strength-fill" id="pwStrengthFill"></div>
+            </div>
+            <span class="pw-strength-label" id="pwStrengthLabel"></span>
+            <span class="auth-field-error" id="regPwErr"></span>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="auth-field">
+            <label for="regConfirm">
+              <i class="fas fa-lock"></i> Confirm Password
+            </label>
+            <div class="auth-input-group">
+              <input
+                type="password"
+                id="regConfirm"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+                required
+              />
+              <button type="button" class="auth-eye-btn" id="toggleConfirmPw" aria-label="Toggle confirm password">
+                <i class="fas fa-eye" id="confirmEyeIcon"></i>
+              </button>
+            </div>
+            <span class="auth-field-error" id="regConfirmErr"></span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary auth-submit-btn" id="regSubmitBtn">
+            <i class="fas fa-user-plus"></i>
+            <span>Create Account</span>
+            <span class="auth-btn-loader" id="regLoader" style="display:none">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+          </button>
+
+        </form>
+
+        <p class="auth-switch">
+          Already have an account?
+          <a href="login.html" class="auth-link">Sign in here</a>
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    /* ── Redirect if already logged in ── */
+    if (AUTH.isLoggedIn()) window.location.href = 'expenses.html';
+
+    /* ── Password toggles ── */
+    function makeToggle(btnId, inputId, iconId) {
+      document.getElementById(btnId).addEventListener('click', () => {
+        const input = document.getElementById(inputId);
+        const icon  = document.getElementById(iconId);
+        if (input.type === 'password') {
+          input.type = 'text'; icon.className = 'fas fa-eye-slash';
+        } else {
+          input.type = 'password'; icon.className = 'fas fa-eye';
+        }
+      });
+    }
+    makeToggle('toggleRegPw',    'regPassword', 'regEyeIcon');
+    makeToggle('toggleConfirmPw','regConfirm',  'confirmEyeIcon');
+
+    /* ── Password strength ── */
+    document.getElementById('regPassword').addEventListener('input', () => {
+      const val   = document.getElementById('regPassword').value;
+      const fill  = document.getElementById('pwStrengthFill');
+      const label = document.getElementById('pwStrengthLabel');
+
+      let score = 0;
+      if (val.length >= 6)  score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val)) score++;
+      if (/[0-9]/.test(val)) score++;
+      if (/[^a-zA-Z0-9]/.test(val)) score++;
+
+      const levels = [
+        { pct: '0%',   cls: '',          text: '' },
+        { pct: '25%',  cls: 'weak',      text: 'Weak' },
+        { pct: '50%',  cls: 'fair',      text: 'Fair' },
+        { pct: '75%',  cls: 'good',      text: 'Good' },
+        { pct: '90%',  cls: 'strong',    text: 'Strong' },
+        { pct: '100%', cls: 'very-strong', text: 'Very Strong' },
+      ];
+
+      const lvl = levels[Math.min(score, 5)];
+      fill.style.width = val.length ? lvl.pct : '0%';
+      fill.className = 'pw-strength-fill ' + lvl.cls;
+      label.textContent = val.length ? lvl.text : '';
+    });
+
+    /* ── Email validation ── */
+    function isValidEmail(e) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+    }
+
+    /* ── Form submission ── */
+    document.getElementById('registerForm').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const name    = document.getElementById('regName').value.trim();
+      const email   = document.getElementById('regEmail').value.trim();
+      const pw      = document.getElementById('regPassword').value;
+      const confirm = document.getElementById('regConfirm').value;
+
+      // Clear all errors
+      ['regNameErr','regEmailErr','regPwErr','regConfirmErr'].forEach(id => {
+        document.getElementById(id).textContent = '';
+      });
+      ['regName','regEmail','regPassword','regConfirm'].forEach(id => {
+        document.getElementById(id).classList.remove('error');
+      });
+      document.getElementById('regAlert').style.display = 'none';
+
+      let valid = true;
+
+      if (!name) {
+        document.getElementById('regNameErr').textContent = 'Please enter your full name.';
+        document.getElementById('regName').classList.add('error');
+        valid = false;
+      }
+      if (!email || !isValidEmail(email)) {
+        document.getElementById('regEmailErr').textContent = 'Please enter a valid email address.';
+        document.getElementById('regEmail').classList.add('error');
+        valid = false;
+      }
+      if (pw.length < 6) {
+        document.getElementById('regPwErr').textContent = 'Password must be at least 6 characters.';
+        document.getElementById('regPassword').classList.add('error');
+        valid = false;
+      }
+      if (pw !== confirm) {
+        document.getElementById('regConfirmErr').textContent = 'Passwords do not match.';
+        document.getElementById('regConfirm').classList.add('error');
+        valid = false;
+      }
+      if (!valid) return;
+
+      // Show loader
+      const btn    = document.getElementById('regSubmitBtn');
+      const loader = document.getElementById('regLoader');
+      btn.disabled = true;
+      loader.style.display = 'inline-flex';
+
+      setTimeout(() => {
+        const result = AUTH.register(name, email, pw);
+        btn.disabled = false;
+        loader.style.display = 'none';
+
+        if (result.ok) {
+          document.getElementById('regSuccess').style.display = 'flex';
+          setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+        } else {
+          document.getElementById('regAlertMsg').textContent = result.error;
+          document.getElementById('regAlert').style.display = 'flex';
+        }
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – TripSpend</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="auth-page">
+
+  <!-- ===== AUTH WRAPPER ===== -->
+  <div class="auth-wrapper">
+
+    <!-- LEFT PANEL – Hero Image -->
+    <div class="auth-panel-left">
+      <div class="auth-panel-overlay"></div>
+      <img src="assets/images/hero-bg.png" alt="Travel" class="auth-panel-img" />
+      <div class="auth-panel-content">
+        <a href="index.html" class="auth-brand">
+          <img src="assets/images/logo.png" alt="TripSpend Logo" class="auth-brand-logo" />
+          <span>TripSpend</span>
+        </a>
+        <h2 class="auth-panel-title">Track Your Adventures, <br />One Expense at a Time.</h2>
+        <p class="auth-panel-desc">
+          Your free, private travel expense manager. No account needed to get started — but sign in to keep your data secure.
+        </p>
+        <div class="auth-panel-stats">
+          <div class="auth-stat"><span class="auth-stat-num">100%</span><span class="auth-stat-label">Free</span></div>
+          <div class="auth-stat-divider"></div>
+          <div class="auth-stat"><span class="auth-stat-num">Private</span><span class="auth-stat-label">Local Storage</span></div>
+          <div class="auth-stat-divider"></div>
+          <div class="auth-stat"><span class="auth-stat-num">CRUD</span><span class="auth-stat-label">Operations</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL – Login Form -->
+    <div class="auth-panel-right">
+      <div class="auth-form-wrap">
+
+        <!-- Mobile brand -->
+        <a href="index.html" class="auth-mobile-brand">
+          <i class="fas fa-plane-departure"></i> TripSpend
+        </a>
+
+        <div class="auth-form-header">
+          <div class="auth-form-icon">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <h1>Welcome Back</h1>
+          <p>Sign in to your TripSpend account</p>
+        </div>
+
+        <!-- Alert box for errors -->
+        <div class="auth-alert auth-alert-error" id="loginAlert" style="display:none">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="loginAlertMsg"></span>
+        </div>
+
+        <form id="loginForm" class="auth-form" novalidate>
+
+          <!-- Email -->
+          <div class="auth-field">
+            <label for="loginEmail">
+              <i class="fas fa-envelope"></i> Email Address
+            </label>
+            <input
+              type="email"
+              id="loginEmail"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <span class="auth-field-error" id="loginEmailErr"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-field">
+            <label for="loginPassword">
+              <i class="fas fa-lock"></i> Password
+            </label>
+            <div class="auth-input-group">
+              <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              />
+              <button type="button" class="auth-eye-btn" id="toggleLoginPw" aria-label="Toggle password">
+                <i class="fas fa-eye" id="loginEyeIcon"></i>
+              </button>
+            </div>
+            <span class="auth-field-error" id="loginPwErr"></span>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary auth-submit-btn" id="loginSubmitBtn">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>Sign In</span>
+            <span class="auth-btn-loader" id="loginLoader" style="display:none">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+          </button>
+
+        </form>
+
+        <p class="auth-switch">
+          Don't have an account?
+          <a href="register.html" class="auth-link">Create one free</a>
+        </p>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    /* ── Redirect if already logged in ── */
+    if (AUTH.isLoggedIn()) window.location.href = 'expenses.html';
+
+    /* ── Password toggle ── */
+    document.getElementById('toggleLoginPw').addEventListener('click', () => {
+      const input = document.getElementById('loginPassword');
+      const icon  = document.getElementById('loginEyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    });
+
+    /* ── Form submission ── */
+    document.getElementById('loginForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const pw    = document.getElementById('loginPassword').value;
+
+      // Clear errors
+      document.getElementById('loginEmailErr').textContent = '';
+      document.getElementById('loginPwErr').textContent = '';
+      document.getElementById('loginAlert').style.display = 'none';
+
+      // Basic validation
+      let valid = true;
+      if (!email) {
+        document.getElementById('loginEmailErr').textContent = 'Please enter your email.';
+        document.getElementById('loginEmail').classList.add('error');
+        valid = false;
+      } else {
+        document.getElementById('loginEmail').classList.remove('error');
+      }
+      if (!pw) {
+        document.getElementById('loginPwErr').textContent = 'Please enter your password.';
+        document.getElementById('loginPassword').classList.add('error');
+        valid = false;
+      } else {
+        document.getElementById('loginPassword').classList.remove('error');
+      }
+      if (!valid) return;
+
+      // Show loader
+      const btn    = document.getElementById('loginSubmitBtn');
+      const loader = document.getElementById('loginLoader');
+      btn.disabled = true;
+      loader.style.display = 'inline-flex';
+
+      // Small artificial delay for UX feedback
+      setTimeout(() => {
+        const result = AUTH.login(email, pw);
+        btn.disabled = false;
+        loader.style.display = 'none';
+
+        if (result.ok) {
+          window.location.href = 'expenses.html';
+        } else {
+          const alert = document.getElementById('loginAlert');
+          document.getElementById('loginAlertMsg').textContent = result.error;
+          alert.style.display = 'flex';
+        }
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>
