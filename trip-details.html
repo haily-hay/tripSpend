@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trip Details – TripSpend</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="app-page">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.png" alt="TripSpend" class="nav-logo-img" />
+        TripSpend
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="trips.html" class="nav-link active">My Trips</a></li>
+        <li id="navUserItem" style="display:none">
+          <a href="#" class="nav-link nav-user-name"><i class="fas fa-user-circle"></i> <span id="navUserName">User</span></a>
+        </li>
+        <li id="navLogoutItem" style="display:none">
+          <a href="#" class="nav-btn nav-logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </li>
+        <li id="navLoginItem">
+          <a href="login.html" class="nav-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== TRIP NOT FOUND ===== -->
+  <div class="empty-state trip-not-found" id="tripNotFound" style="display:none">
+    <div class="empty-icon"><i class="fas fa-compass"></i></div>
+    <h3>Trip not found</h3>
+    <p>This trip may have been deleted. Head back to My Trips to pick another one.</p>
+    <a href="trips.html" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Back to My Trips</a>
+  </div>
+
+  <div id="tripContent">
+    <!-- ===== TRIP HEADER ===== -->
+    <div class="trip-header" id="tripHeader">
+      <div class="trip-header-overlay"></div>
+      <div class="trip-header-content">
+        <a href="trips.html" class="trip-back-link"><i class="fas fa-arrow-left"></i> My Trips</a>
+        <h1 id="tripHeaderName">Trip</h1>
+        <p class="trip-header-dest"><i class="fas fa-location-dot"></i> <span id="tripHeaderDest"></span></p>
+        <p class="trip-header-dates"><i class="fas fa-calendar"></i> <span id="tripHeaderDates"></span></p>
+        <p class="trip-header-desc" id="tripHeaderDesc"></p>
+        <div class="trip-header-actions">
+          <button class="btn btn-primary" id="openAddExpenseBtn">
+            <i class="fas fa-plus"></i> Add Expense
+          </button>
+          <button class="btn btn-outline-light" id="openEditTripBtn">
+            <i class="fas fa-pen"></i> Edit Trip
+          </button>
+          <button class="btn btn-outline-light btn-danger-light" id="openDeleteTripBtn">
+            <i class="fas fa-trash"></i> Delete Trip
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="dash-main">
+
+      <!-- TRIP SUMMARY -->
+      <section class="summary-section">
+        <div class="summary-card">
+          <div class="summary-icon teal"><i class="fas fa-rupee-sign"></i></div>
+          <div>
+            <div class="summary-num" id="tripSummarySpent">₹0</div>
+            <div class="summary-label">Total Spent</div>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon purple"><i class="fas fa-receipt"></i></div>
+          <div>
+            <div class="summary-num" id="tripSummaryCount">0</div>
+            <div class="summary-label">Expenses</div>
+          </div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon blue"><i class="fas fa-chart-simple"></i></div>
+          <div>
+            <div class="summary-num" id="tripSummaryAvg">₹0</div>
+            <div class="summary-label">Average Expense</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CATEGORY BREAKDOWN -->
+      <section class="category-breakdown-card" id="categoryBreakdownCard">
+        <h2><i class="fas fa-chart-pie"></i> Category Breakdown</h2>
+        <div class="category-bars" id="categoryBars"></div>
+        <p class="category-empty-hint" id="categoryEmptyHint" style="display:none">Add an expense to see your category breakdown.</p>
+      </section>
+
+      <!-- EXPENSE LIST -->
+      <section class="expense-list-section">
+        <div class="dash-section-header">
+          <h2><i class="fas fa-list"></i> Expenses</h2>
+          <span class="record-badge" id="expenseRecordBadge">0 records</span>
+        </div>
+
+        <div class="trips-toolbar">
+          <div class="search-wrap">
+            <i class="fas fa-search"></i>
+            <input type="text" id="expenseSearch" placeholder="Search description or category..." />
+          </div>
+          <select id="expenseCategoryFilter" class="filter-select">
+            <option value="">All Categories</option>
+          </select>
+          <select id="expenseSort" class="filter-select">
+            <option value="latest">Latest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="highest">Highest Amount</option>
+            <option value="lowest">Lowest Amount</option>
+          </select>
+        </div>
+
+        <div class="expense-cards" id="expenseCards"></div>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-state" id="expenseEmptyState" style="display:none">
+          <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+          <h3>No expenses yet</h3>
+          <p>Start tracking your spending for this trip.</p>
+          <button class="btn btn-primary" id="emptyAddExpenseBtn">
+            <i class="fas fa-plus"></i> Add Expense
+          </button>
+        </div>
+
+        <!-- NO SEARCH RESULTS -->
+        <div class="empty-state" id="expenseNoResults" style="display:none">
+          <div class="empty-icon"><i class="fas fa-magnifying-glass"></i></div>
+          <h3>No matching expenses</h3>
+          <p>Try a different search term or category filter.</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== ADD / EDIT EXPENSE MODAL ===== -->
+  <div class="modal-overlay" id="expenseModal" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+    <div class="modal-box modal-box-lg">
+      <button class="modal-close-x" id="expenseModalCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+      <h3 id="expenseModalTitle" class="modal-form-title"><i class="fas fa-plus-circle"></i> Add Expense</h3>
+      <form id="expenseForm" class="expense-form" novalidate>
+        <input type="hidden" id="editExpenseId" />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="expenseAmount"><i class="fas fa-rupee-sign"></i> Amount (₹)</label>
+            <input type="number" id="expenseAmount" placeholder="e.g. 850" min="0" step="0.01" required />
+            <span class="field-error" id="expenseAmountErr"></span>
+          </div>
+          <div class="form-group">
+            <label for="expenseCategory"><i class="fas fa-layer-group"></i> Category</label>
+            <select id="expenseCategory" required>
+              <option value="">Select Category</option>
+            </select>
+            <span class="field-error" id="expenseCategoryErr"></span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="expenseDate"><i class="fas fa-calendar"></i> Date</label>
+          <input type="date" id="expenseDate" required />
+          <span class="field-error" id="expenseDateErr"></span>
+        </div>
+        <div class="form-group full">
+          <label for="expenseDescription"><i class="fas fa-align-left"></i> Description</label>
+          <textarea id="expenseDescription" rows="2" placeholder="e.g. Dinner at Baga Beach"></textarea>
+        </div>
+        <div class="form-group full">
+          <label><i class="fas fa-camera"></i> Photos (optional, up to 3)</label>
+          <input type="file" id="expenseImagesInput" accept="image/*" capture="environment" multiple hidden />
+          <div class="upload-dropzone" id="expenseImagesDropzone" tabindex="0" role="button" aria-label="Upload receipts or photos">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span class="upload-text">Upload receipts, tickets, or photos</span>
+            <span class="upload-hint">JPG or PNG, up to 5MB each — max 3 photos</span>
+          </div>
+          <div class="image-thumb-row" id="expenseImagesRow"></div>
+          <span class="field-error" id="expenseImagesErr"></span>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="expenseSubmitBtn">
+            <i class="fas fa-plus"></i> Add Expense
+          </button>
+          <button type="button" class="btn btn-outline" id="expenseCancelBtn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== EXPENSE DETAILS MODAL ===== -->
+  <div class="modal-overlay" id="expenseDetailsModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box-lg">
+      <button class="modal-close-x" id="expenseDetailsCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+      <div class="expense-details-top">
+        <span class="cat-badge" id="detailsCategoryBadge"></span>
+        <span class="expense-details-amount" id="detailsAmount">₹0</span>
+      </div>
+      <h3 class="expense-details-desc" id="detailsDescription">Expense</h3>
+      <p class="expense-details-date" id="detailsDate"></p>
+      <p class="expense-details-trip" id="detailsTripName"></p>
+      <div class="image-thumb-row image-thumb-row-view" id="detailsImages"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="detailsEditBtn"><i class="fas fa-pen"></i> Edit Expense</button>
+        <button class="btn btn-danger" id="detailsDeleteBtn"><i class="fas fa-trash"></i> Delete Expense</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== EDIT TRIP MODAL ===== -->
+  <div class="modal-overlay" id="editTripModal" role="dialog" aria-modal="true">
+    <div class="modal-box modal-box-lg">
+      <button class="modal-close-x" id="editTripCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+      <h3 class="modal-form-title"><i class="fas fa-pen"></i> Edit Trip</h3>
+      <form id="editTripForm" class="expense-form" novalidate>
+        <div class="form-group full">
+          <label for="editTripName"><i class="fas fa-tag"></i> Trip Name</label>
+          <input type="text" id="editTripName" required />
+          <span class="field-error" id="editTripNameErr"></span>
+        </div>
+        <div class="form-group full">
+          <label for="editTripDestination"><i class="fas fa-location-dot"></i> Destination</label>
+          <input type="text" id="editTripDestination" required />
+          <span class="field-error" id="editTripDestErr"></span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editTripStart"><i class="fas fa-calendar"></i> Start Date</label>
+            <input type="date" id="editTripStart" required />
+            <span class="field-error" id="editTripStartErr"></span>
+          </div>
+          <div class="form-group">
+            <label for="editTripEnd"><i class="fas fa-calendar"></i> End Date</label>
+            <input type="date" id="editTripEnd" required />
+            <span class="field-error" id="editTripEndErr"></span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="editTripDescription"><i class="fas fa-align-left"></i> Description</label>
+          <textarea id="editTripDescription" rows="3"></textarea>
+        </div>
+        <div class="form-group full">
+          <label><i class="fas fa-image"></i> Cover Image</label>
+          <input type="file" id="editTripCoverInput" accept="image/*" hidden />
+          <div class="upload-preview" id="editTripCoverPreview">
+            <img id="editTripCoverPreviewImg" alt="Cover preview" />
+            <div class="upload-preview-info">
+              <span>Current cover image</span>
+              <button type="button" class="upload-remove-btn" id="editTripCoverChangeBtn">
+                <i class="fas fa-camera"></i> Change
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="editTripSubmitBtn">
+            <i class="fas fa-save"></i> Save Changes
+          </button>
+          <button type="button" class="btn btn-outline" id="editTripCancelBtn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== DELETE EXPENSE MODAL ===== -->
+  <div class="modal-overlay" id="deleteExpenseModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+      <h3>Delete Expense?</h3>
+      <p>This expense will be removed from your trip. This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="confirmDeleteExpense"><i class="fas fa-trash"></i> Delete Expense</button>
+        <button class="btn btn-outline" id="cancelDeleteExpense">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DELETE TRIP MODAL ===== -->
+  <div class="modal-overlay" id="deleteTripModal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+      <h3 id="deleteTripTitle">Delete Trip?</h3>
+      <p>This will remove the trip and all expenses associated with it from this prototype.</p>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="confirmDeleteTrip"><i class="fas fa-trash"></i> Delete Trip</button>
+        <button class="btn btn-outline" id="cancelDeleteTrip">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== IMAGE LIGHTBOX ===== -->
+  <div class="modal-overlay lightbox-overlay" id="lightboxModal">
+    <div class="lightbox-box">
+      <button class="lightbox-close" id="lightboxClose" aria-label="Close"><i class="fas fa-times"></i></button>
+      <img id="lightboxImg" src="" alt="Expense photo" />
+      <p class="lightbox-caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <i class="fas fa-plane-departure"></i> TripSpend
+        </a>
+        <p>Your personal travel expense manager.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="trips.html">My Trips</a></li>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> TripSpend. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/trip-details.js"></script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Trips – TripSpend</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="app-page">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.png" alt="TripSpend" class="nav-logo-img" />
+        TripSpend
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+        <li><a href="trips.html" class="nav-link active">My Trips</a></li>
+        <li id="navUserItem" style="display:none">
+          <a href="#" class="nav-link nav-user-name"><i class="fas fa-user-circle"></i> <span id="navUserName">User</span></a>
+        </li>
+        <li id="navLogoutItem" style="display:none">
+          <a href="#" class="nav-btn nav-logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </li>
+        <li id="navLoginItem">
+          <a href="login.html" class="nav-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1><i class="fas fa-suitcase-rolling"></i> My Trips</h1>
+      <p>Every adventure, organized and accounted for</p>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="dash-main">
+
+    <!-- TOOLBAR -->
+    <section class="trips-toolbar">
+      <div class="search-wrap">
+        <i class="fas fa-search"></i>
+        <input type="text" id="tripSearch" placeholder="Search by trip name or destination..." />
+      </div>
+      <select id="tripSort" class="filter-select">
+        <option value="latest">Latest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="highest">Highest Spent</option>
+        <option value="lowest">Lowest Spent</option>
+      </select>
+      <button class="btn btn-primary" id="openCreateTripBtn">
+        <i class="fas fa-plus"></i> Create Trip
+      </button>
+    </section>
+
+    <section class="dash-trips-section">
+      <div class="trip-grid" id="tripGrid"></div>
+
+      <!-- EMPTY STATE: no trips at all -->
+      <div class="empty-state" id="emptyState" style="display:none">
+        <img src="assets/images/trips/default.jpg" class="empty-state-img" alt="A scenic travel destination" />
+        <h3>Your next adventure starts here.</h3>
+        <p>Create your first trip and start tracking every expense.</p>
+        <button class="btn btn-primary" id="emptyCreateTripBtn">
+          <i class="fas fa-plus"></i> Create Trip
+        </button>
+      </div>
+
+      <!-- NO SEARCH RESULTS -->
+      <div class="empty-state" id="noResultsState" style="display:none">
+        <div class="empty-icon"><i class="fas fa-magnifying-glass"></i></div>
+        <h3>No trips match your search</h3>
+        <p>Try a different trip name or destination.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== CREATE / EDIT TRIP MODAL ===== -->
+  <div class="modal-overlay" id="tripModal" role="dialog" aria-modal="true" aria-labelledby="tripModalTitle">
+    <div class="modal-box modal-box-lg">
+      <button class="modal-close-x" id="tripModalCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+      <h3 id="tripModalTitle" class="modal-form-title"><i class="fas fa-plus-circle"></i> Create Trip</h3>
+      <form id="tripForm" class="expense-form" novalidate>
+        <input type="hidden" id="tripId" />
+        <div class="form-group full">
+          <label for="tripName"><i class="fas fa-tag"></i> Trip Name</label>
+          <input type="text" id="tripName" placeholder="e.g. Goa Escape" required />
+          <span class="field-error" id="tripNameErr"></span>
+        </div>
+        <div class="form-group full">
+          <label for="tripDestination"><i class="fas fa-location-dot"></i> Destination</label>
+          <input type="text" id="tripDestination" placeholder="e.g. Goa" required />
+          <span class="field-error" id="tripDestErr"></span>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tripStart"><i class="fas fa-calendar"></i> Start Date</label>
+            <input type="date" id="tripStart" required />
+            <span class="field-error" id="tripStartErr"></span>
+          </div>
+          <div class="form-group">
+            <label for="tripEnd"><i class="fas fa-calendar"></i> End Date</label>
+            <input type="date" id="tripEnd" required />
+            <span class="field-error" id="tripEndErr"></span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="tripDescription"><i class="fas fa-align-left"></i> Description</label>
+          <textarea id="tripDescription" rows="3" placeholder="e.g. Weekend beach trip with friends"></textarea>
+        </div>
+        <div class="form-group full">
+          <label><i class="fas fa-image"></i> Cover Image (optional)</label>
+          <input type="file" id="tripCoverInput" accept="image/*" hidden />
+          <div class="upload-dropzone" id="tripCoverDropzone" tabindex="0" role="button" aria-label="Upload a cover image">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span class="upload-text">Click to upload a cover photo</span>
+            <span class="upload-hint">If skipped, a travel photo will be used automatically</span>
+          </div>
+          <div class="upload-preview" id="tripCoverPreview" style="display:none">
+            <img id="tripCoverPreviewImg" alt="Cover preview" />
+            <div class="upload-preview-info">
+              <span id="tripCoverPreviewName">cover.jpg</span>
+              <button type="button" class="upload-remove-btn" id="tripCoverRemoveBtn">
+                <i class="fas fa-trash"></i> Remove
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="tripSubmitBtn">
+            <i class="fas fa-plus"></i> Create Trip
+          </button>
+          <button type="button" class="btn btn-outline" id="tripCancelBtn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <i class="fas fa-plane-departure"></i> TripSpend
+        </a>
+        <p>Your personal travel expense manager.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="trips.html">My Trips</a></li>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> TripSpend. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/trips.js"></script>
+</body>
+</html>

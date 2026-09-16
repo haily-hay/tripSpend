@@ -22,6 +22,7 @@
       <ul class="nav-links" id="navLinks">
         <li><a href="#home"     class="nav-link active">Home</a></li>
         <li><a href="#features" class="nav-link">Features</a></li>
+        <li><a href="#gallery"  class="nav-link">Gallery</a></li>
         <li><a href="#about"    class="nav-link">About</a></li>
         <li id="navAuthItem"><a href="login.html"    class="nav-link">Login</a></li>
         <li><a href="register.html" class="nav-btn">Get Started</a></li>
@@ -42,19 +43,19 @@
       <div class="hero-content">
         <div class="hero-badge">✈️ Smart Travel Finance</div>
         <h1 class="hero-title">
-          Manage Your Travel<br />
-          <span class="gradient-text">Expenses Easily</span>
+          Track Every Rupee.<br />
+          <span class="gradient-text">Remember Every Journey.</span>
         </h1>
         <p class="hero-desc">
-          Track, organize, and manage your travel expenses in one simple place.
-          Free forever, works offline, data stays on your device.
+          Keep your travel expenses organized, understand where your money goes,
+          and keep your receipts and memories together in one place.
         </p>
         <div class="hero-actions">
           <a href="register.html" class="btn btn-primary">
-            <i class="fas fa-rocket"></i> Start for Free
+            <i class="fas fa-rocket"></i> Start Your Trip
           </a>
           <a href="#features" class="btn btn-outline">
-            <i class="fas fa-play-circle"></i> Learn More
+            <i class="fas fa-play-circle"></i> Explore TripSpend
           </a>
         </div>
         <div class="hero-stats">
@@ -129,6 +130,59 @@
     </div>
   </section>
 
+  <!-- ===== TRIP GALLERY ===== -->
+  <section class="gallery" id="gallery">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">Your Trip</span>
+        <h2 class="section-title">Every Expense Tells a Story</h2>
+        <p class="section-desc">From flights to feasts — see the moments behind your spending</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-card featured">
+          <img src="assets/images/gallery/food.jpg" alt="Food &amp; dining expenses" />
+          <div class="gallery-overlay">
+            <span class="gallery-tag"><i class="fas fa-utensils"></i> Food</span>
+            <h3>Dining &amp; Local Cuisine</h3>
+          </div>
+        </div>
+        <div class="gallery-card wide">
+          <img src="assets/images/gallery/hotel.jpg" alt="Accommodation expenses" />
+          <div class="gallery-overlay">
+            <span class="gallery-tag"><i class="fas fa-bed"></i> Stays</span>
+            <h3>Accommodation</h3>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/images/gallery/flight.jpg" alt="Transport expenses" />
+          <div class="gallery-overlay">
+            <span class="gallery-tag"><i class="fas fa-plane"></i> Transport</span>
+          </div>
+        </div>
+        <div class="gallery-card">
+          <img src="assets/images/gallery/shopping.jpg" alt="Shopping expenses" />
+          <div class="gallery-overlay">
+            <span class="gallery-tag"><i class="fas fa-bag-shopping"></i> Shopping</span>
+          </div>
+        </div>
+        <div class="gallery-card wide">
+          <img src="assets/images/gallery/entertainment.jpg" alt="Entertainment expenses" />
+          <div class="gallery-overlay">
+            <span class="gallery-tag"><i class="fas fa-music"></i> Entertainment</span>
+            <h3>Nights Out &amp; Shows</h3>
+          </div>
+        </div>
+        <div class="gallery-card wide">
+          <img src="assets/images/gallery/adventure.jpg" alt="Adventure &amp; sightseeing expenses" />
+          <div class="gallery-overlay">
+            <span class="gallery-tag"><i class="fas fa-umbrella-beach"></i> Adventure</span>
+            <h3>Sightseeing &amp; Adventure</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== HOW IT WORKS ===== -->
   <section class="how-it-works" id="about">
     <div class="section-container">
@@ -196,6 +250,7 @@
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#features">Features</a></li>
+          <li><a href="#gallery">Gallery</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="login.html">Login</a></li>
           <li><a href="register.html">Register</a></li>
@@ -216,12 +271,12 @@
         const session = AUTH.getSession();
         const authItem = document.getElementById('navAuthItem');
         if (authItem) {
-          authItem.innerHTML = `<a href="expenses.html" class="nav-link"><i class="fas fa-user-circle"></i> ${session.name.split(' ')[0]}</a>`;
+          authItem.innerHTML = `<a href="dashboard.html" class="nav-link"><i class="fas fa-user-circle"></i> ${session.name.split(' ')[0]}</a>`;
         }
         const getStarted = document.querySelector('.nav-btn');
         if (getStarted) {
-          getStarted.href = 'expenses.html';
-          getStarted.textContent = 'My Expenses';
+          getStarted.href = 'dashboard.html';
+          getStarted.textContent = 'Dashboard';
         }
       }
     })();

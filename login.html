@@ -120,7 +120,7 @@
   <script src="js/auth.js"></script>
   <script>
     /* ── Redirect if already logged in ── */
-    if (AUTH.isLoggedIn()) window.location.href = 'expenses.html';
+    if (AUTH.isLoggedIn()) window.location.href = 'dashboard.html';
 
     /* ── Password toggle ── */
     document.getElementById('toggleLoginPw').addEventListener('click', () => {
@@ -177,7 +177,7 @@
         loader.style.display = 'none';
 
         if (result.ok) {
-          window.location.href = 'expenses.html';
+          window.location.href = 'dashboard.html';
         } else {
           const alert = document.getElementById('loginAlert');
           document.getElementById('loginAlertMsg').textContent = result.error;

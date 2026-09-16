@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard – TripSpend</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="app-page">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/images/logo.png" alt="TripSpend" class="nav-logo-img" />
+        TripSpend
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+        <li><a href="trips.html" class="nav-link">My Trips</a></li>
+        <li id="navUserItem" style="display:none">
+          <a href="#" class="nav-link nav-user-name"><i class="fas fa-user-circle"></i> <span id="navUserName">User</span></a>
+        </li>
+        <li id="navLogoutItem" style="display:none">
+          <a href="#" class="nav-btn nav-logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+        </li>
+        <li id="navLoginItem">
+          <a href="login.html" class="nav-btn">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-hero">
+    <div class="page-hero-content">
+      <h1><i class="fas fa-gauge-high"></i> <span id="welcomeHeading">Welcome back</span></h1>
+      <p>Here's how your travel spending looks across every trip</p>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="dash-main">
+
+    <!-- OVERVIEW CARDS -->
+    <section class="summary-section" id="overviewCards">
+      <div class="summary-card">
+        <div class="summary-icon purple"><i class="fas fa-suitcase-rolling"></i></div>
+        <div>
+          <div class="summary-num" id="statTrips">0</div>
+          <div class="summary-label">Total Trips</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon blue"><i class="fas fa-receipt"></i></div>
+        <div>
+          <div class="summary-num" id="statExpenses">0</div>
+          <div class="summary-label">Total Expenses</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon teal"><i class="fas fa-rupee-sign"></i></div>
+        <div>
+          <div class="summary-num" id="statSpent">₹0</div>
+          <div class="summary-label">Total Spent</div>
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-icon orange"><i class="fas fa-map-location-dot"></i></div>
+        <div>
+          <div class="summary-num" id="statActiveTrip">—</div>
+          <div class="summary-label">Active Trip</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRIPS PREVIEW -->
+    <section class="dash-trips-section">
+      <div class="dash-section-header">
+        <h2><i class="fas fa-images"></i> Your Trips</h2>
+        <div class="dash-header-actions">
+          <a href="trips.html" class="btn btn-outline btn-sm">View All Trips</a>
+          <a href="trips.html?create=1" class="btn btn-primary btn-sm">
+            <i class="fas fa-plus"></i> Create Trip
+          </a>
+        </div>
+      </div>
+
+      <div class="trip-grid" id="tripGrid"></div>
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state" id="emptyState" style="display:none">
+        <img src="assets/images/trips/default.jpg" class="empty-state-img" alt="A scenic travel destination" />
+        <h3>Your next adventure starts here.</h3>
+        <p>Create your first trip and start tracking every expense.</p>
+        <a href="trips.html?create=1" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Create Trip
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <i class="fas fa-plane-departure"></i> TripSpend
+        </a>
+        <p>Your personal travel expense manager.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="trips.html">My Trips</a></li>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="year"></span> TripSpend. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
